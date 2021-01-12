@@ -38,10 +38,10 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Total Blogs
+                            Today's Date
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">
-                            350,897
+                          <span className="h5 font-weight-bold mb-0">
+                            {new Date().toDateString()}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -52,9 +52,9 @@ class Header extends React.Component {
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up" /> 3.48%
+                          <i className="fa fa-clock" /> {new Date().toLocaleDateString()}
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        {/* <span className="text-nowrap">Since last month</span> */}
                       </p>
                     </CardBody>
                   </Card>

@@ -33,20 +33,20 @@ var routes = [
     component: Index,
     layout: "/portal"
   },
-  {
-    path: "/createblog",
-    name: "Create Blog",
-    icon: "ni ni-single-copy-04 text-blue",
-    component: CreateBlog,
-    layout: "/portal"
-  },
-  {
-    path: "/editblog",
-    name: "Edit Blog",
-    icon: "ni ni-single-02 text-orange",
-    component: EditBlog,
-    layout: "/portal"
-  },
+  // {
+  //   path: "/createblog",
+  //   name: "Create Blog",
+  //   icon: "ni ni-single-copy-04 text-blue",
+  //   component: CreateBlog,
+  //   layout: "/portal"
+  // },
+  // {
+  //   path: "/editblog",
+  //   name: "Edit Blog",
+  //   icon: "ni ni-single-02 text-orange",
+  //   component: EditBlog,
+  //   layout: "/portal"
+  // },
   {
     path: "/createjob",
     name: "Create Job",
