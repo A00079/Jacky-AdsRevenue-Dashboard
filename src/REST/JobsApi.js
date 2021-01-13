@@ -7,7 +7,7 @@ const PostData = {
   },
   updatedetails(urls, data) {
     const url = urls;
-    return this.requestPostCall(baseUrl + url, data);
+    return this.requestPatchCall(baseUrl + url, data);
   },
   getList(urls) {
     const url = urls;
@@ -24,6 +24,22 @@ const PostData = {
   requestPostCall(url, data) {
     return fetch(url, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+  requestPatchCall(url, data) {
+    return fetch(url, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
