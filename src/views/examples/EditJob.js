@@ -31,7 +31,8 @@ import {
   Nav,
   Progress,
   Table,
-  Col
+  Col,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from "reactstrap";
 
 // reactstrap components
@@ -48,8 +49,25 @@ import jobApi from "../../REST/JobsApi.js";
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
 
-const EditJobs = () => {
+const EditJobs = (props) => {
+  const {
+    buttonLabel,
+    className
+  } = props;
   const [jobList, setJobList] = React.useState([]);
+
+
+  const [jobTitle, setjobTitle] = React.useState('');
+  const [jobLocation, setjobLocation] = React.useState('');
+  const [jobEducation, setjobEducation] = React.useState('');
+  const [jobExperience, setjobExperience] = React.useState('');
+  const [jobSalary, setjobSalary] = React.useState('');
+  const [jobKeySkills, setjobKeySkills] = React.useState('');
+  const [jobDescription, setjobDescription] = React.useState('');
+
+  const [modal, setModal] = React.useState(false);
+  const [EditDetails, setEditDetails] = React.useState([]);
+  const toggle = () => setModal(!modal);
   React.useEffect(() => {
     fetchJobList();
   }, []);
@@ -62,16 +80,56 @@ const EditJobs = () => {
       })
       .catch((err) => console.log('Err', err))
   }
-  const handleJobEdit = () => {
-    // let api_url = "/api/careers/createjob";
-    // jobApi
-    //   .updatedetails(api_url, data)
-    //   .then(response => {
-    //     if (response) {
-    //       this.state = {};
-    //     }
-    //     console.log("Response Data...", response);
-    //   }).catch(err => console.log('Err', err));
+
+
+  const handleJobTitle = (e) => {
+    setjobTitle(e.target.value)
+  }
+  const handleJobLocation = (e) => {
+    setjobLocation(e.target.value)
+  }
+  const handleJobExperience = (e) => {
+    setjobExperience(e.target.value)
+  }
+  const handleJobSalary = (e) => {
+    setjobSalary(e.target.value)
+  }
+  const handleJobEducation = (e) => {
+    setjobEducation(e.target.value)
+  }
+  const handleJobKeyskill = (e) => {
+    setjobKeySkills(e.target.value)
+  }
+  const handleJobDiscription = (e) => {
+    setjobDescription(e.target.value)
+  }
+
+  const handleJobEdit = (editData) => {
+    setModal(true);
+    console.log('Edit Data', editData);
+    setEditDetails(editData);
+    
+  }
+  const ModifyJobDetails = () =>{
+    let api_url = "/api/careers/updatejob/"+EditDetails.id;
+    let data = {
+      'jobTitle': (jobTitle) ? jobTitle : EditDetails.job_title,
+      'location': (jobLocation) ? jobLocation : EditDetails.location,
+      'experience': (jobEducation) ? jobEducation : EditDetails.experience,
+      'salary': (jobExperience) ? jobExperience : EditDetails.salary,
+      'education': (jobSalary) ? jobSalary : EditDetails.education,
+      'keySkills': (jobKeySkills) ? jobKeySkills : EditDetails.key_skills,
+      'jobDescription': (jobDescription) ? jobDescription : EditDetails.job_description
+    }
+    jobApi
+      .updatedetails(api_url, data)
+      .then(response => {
+        if (response) {
+          setModal(false);
+          fetchJobList();
+        }
+        console.log("Response Data...", response);
+      }).catch(err => console.log('Err', err));
   }
   const handleJobDelete = (jobId) => {
     let flag = window.confirm("Are You Sure You Want To Delete?");
@@ -157,6 +215,33 @@ const EditJobs = () => {
             </Card>
           </div>
         </Row>
+        <Modal isOpen={modal} toggle={toggle} className={className}>
+          <ModalHeader toggle={toggle}>Edit Job</ModalHeader>
+          <ModalBody>
+            <div class="form bg-white my-2 relative">
+              {/* <div class="icon bg-blue-600 text-white w-6 h-6 absolute flex items-center justify-center p-5" style={{left:'-40px'}}><i class="fal fa-phone-volume fa-fw text-2xl transform -rotate-45"></i></div> */}
+              <h3 class="text-2xl text-gray-900 font-semibold">Modify Job Details.</h3>
+              {/* <p class="text-gray-600"> To help you choose your property</p> */}
+              <div class="flex space-x-5 mt-3">
+                <input required type="text" name="title" id="" placeholder="Title..." class="border p-2  w-1/2" onChange={e => handleJobTitle(e)} defaultValue={(jobTitle) ? jobTitle : EditDetails.job_title} />
+                <input required type="text" name="Location" id="" placeholder="Location..." class="border p-2 w-1/2"  onChange={e => handleJobLocation(e)} defaultValue={(jobLocation) ? jobLocation : EditDetails.location} />
+              </div>
+              <div class="flex space-x-5 mt-3">
+                <input required type="text" name="experience" id="" placeholder="Expeirence..." class="border p-2 w-full mt-3"  onChange={e => handleJobExperience(e)} defaultValue={(jobExperience) ? jobExperience : EditDetails.experience} />
+                <input required type="text" name="salary" id="" placeholder="Salary..." class="border p-2 w-full mt-3"  onChange={e => handleJobSalary(e)} defaultValue={(jobSalary) ? jobSalary : EditDetails.salary} />
+              </div>
+              <div class="flex space-x-5 mt-3">
+                <input required type="text" name="education" id="" placeholder="Education..." class="border p-2 w-full mt-3"  onChange={e => handleJobEducation(e)} defaultValue={(jobEducation) ? jobEducation : EditDetails.education} />
+                <input required type="text" name="keyskill" id="" placeholder="Key Skills..." class="border p-2 w-full mt-3"  onChange={e => handleJobKeyskill(e)} defaultValue={(jobKeySkills) ? jobKeySkills : EditDetails.key_skills} />
+              </div>
+              <textarea required name="discription" id="" cols="10" rows="3" placeholder="Discription..." class="border p-2 mt-3 w-full"  onChange={e => handleJobDiscription(e)} defaultValue={(jobDescription) ? jobDescription : EditDetails.job_description}></textarea>
+            </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={toggle}>Cancel</Button>
+            <Button color="primary" onClick={() => ModifyJobDetails()}>Edit Job</Button>{' '}
+          </ModalFooter>
+        </Modal>
       </Container>
     </React.Fragment>
   );
