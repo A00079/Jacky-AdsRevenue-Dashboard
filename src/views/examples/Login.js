@@ -32,118 +32,69 @@ import {
   Row,
   Col
 } from "reactstrap";
+import logo from "../../assets/img/brand/logo.png";
 
-class Login extends React.Component {
-  render() {
-    return (
-      <>
-        <Col lg="5" md="7">
-          <Card className="bg-secondary shadow border-0">
-            <CardHeader className="bg-transparent pb-5">
-              <div className="text-muted text-center mt-2 mb-3">
-                <small>Sign in with</small>
-              </div>
-              <div className="btn-wrapper text-center">
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/github.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Github</span>
-                </Button>
-                <Button
-                  className="btn-neutral btn-icon"
-                  color="default"
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  <span className="btn-inner--icon">
-                    <img
-                      alt="..."
-                      src={require("assets/img/icons/common/google.svg")}
-                    />
-                  </span>
-                  <span className="btn-inner--text">Google</span>
-                </Button>
-              </div>
-            </CardHeader>
-            <CardBody className="px-lg-5 py-lg-5">
-              <div className="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
-              </div>
-              <Form role="form">
-                <FormGroup className="mb-3">
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-email-83" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
-                  </InputGroup>
-                </FormGroup>
-                <FormGroup>
-                  <InputGroup className="input-group-alternative">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                        <i className="ni ni-lock-circle-open" />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
-                  </InputGroup>
-                </FormGroup>
-                <div className="custom-control custom-control-alternative custom-checkbox">
-                  <input
-                    className="custom-control-input"
-                    id=" customCheckLogin"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor=" customCheckLogin"
-                  >
-                    <span className="text-muted">Remember me</span>
-                  </label>
-                </div>
-                <div className="text-center">
-                  <Button className="my-4" color="primary" type="button">
-                    Sign in
-                  </Button>
-                </div>
-              </Form>
-            </CardBody>
-          </Card>
-          <Row className="mt-3">
-            <Col xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Forgot password?</small>
-              </a>
-            </Col>
-            <Col className="text-right" xs="6">
-              <a
-                className="text-light"
-                href="#pablo"
-                onClick={e => e.preventDefault()}
-              >
-                <small>Create new account</small>
-              </a>
-            </Col>
-          </Row>
-        </Col>
-      </>
-    );
+const Login = (props) => {
+  const [authEmail, setAuthEmail] = React.useState('');
+  const [authPass, setAuthPass] = React.useState('');
+
+  const handleAuthEmail = (e) =>{
+    console.log('Email',e.target.value);
+    setAuthEmail(e.target.value);
   }
+  const handleAuthPass = (e) =>{
+    setAuthPass(e.target.value);
+  }
+
+  const handleSignin = () =>{
+    console.log('authEmail',authEmail,authPass)
+    if(authEmail === "jaitiwari1020@gmail.com" && authPass === "adsrevenue@1020"){
+      sessionStorage.setItem("token", "xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505");
+      setTimeout(()=>{
+        props.history.push("portal/index");
+      },700)
+    }else{
+      alert('Wrong ID or Password Combination');
+    }
+  }
+  return (
+    <React.Fragment>
+      <div class="mt-60 h-96 rounded-md flex items-center justify-center bg-gray-50 py-2 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-2">
+          <div>
+            <img class="mx-auto h-12  w-auto" src={logo} alt="Workflow" />
+            <h2 class="mt-10 text-center text-3xl font-extrabold text-gray-900">
+              Sign in to your account
+            </h2>
+          </div>
+          <div class="mt-0 space-y-6">
+            <input type="hidden" name="remember" value="true" />
+            <div class="rounded-md shadow-sm -space-y-px">
+              <div>
+                <label for="email-address" class="sr-only">Email address</label>
+                <input id="email-address" onChange={e => handleAuthEmail(e)} name="email" type="text" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" />
+              </div>
+              <div>
+                <label for="password" class="sr-only">Password</label>
+                <input id="password" onChange={e => handleAuthPass(e)} name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" />
+              </div>
+            </div>
+            <div>
+              <button onClick={() =>{handleSignin()}} class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                  <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+          Sign in
+        </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </React.Fragment>
+  );
 }
 
 export default Login;

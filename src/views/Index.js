@@ -47,7 +47,6 @@ import {
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
-
 class Index extends React.Component {
   constructor(props){
     super(props);
@@ -57,6 +56,11 @@ class Index extends React.Component {
     };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
+    }
+  }
+  componentDidMount(){
+    if(sessionStorage.getItem("token") !== 'xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505'){
+      this.props.history.push('/auth/login');
     }
   }
   toggleNavs = (e, index) => {

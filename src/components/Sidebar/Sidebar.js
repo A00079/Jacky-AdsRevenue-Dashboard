@@ -78,6 +78,10 @@ class Sidebar extends React.Component {
       collapseOpen: false
     });
   };
+  logout() {
+    sessionStorage.clear();
+    this.props.history.push('/auth/login');
+  }
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
     return routes.map((prop, key) => {
@@ -248,7 +252,7 @@ class Sidebar extends React.Component {
               </li>
               {this.createLinks(routes)}
               <li class="nav-item">
-                <a aria-current="page" class="nav-link" href="/">
+                <a aria-current="page" class="nav-link" href="javascript:void(0)" onClick={() =>this.logout()}>
                   <i class="ni ni-button-power text-red"></i>
                   <span className='font-black'>Logout</span>
                 </a>
