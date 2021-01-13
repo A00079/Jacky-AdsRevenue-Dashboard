@@ -32,7 +32,10 @@ import {
   Progress,
   Table,
   Col,
-  Modal, ModalHeader, ModalBody, ModalFooter
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
 
 // reactstrap components
@@ -41,29 +44,24 @@ import {
   chartOptions,
   parseOptions,
   chartExample1,
-  chartExample2
+  chartExample2,
 } from "variables/charts.js";
 // core components
 import Header from "components/Headers/Header.js";
 import jobApi from "../../REST/JobsApi.js";
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
-
 const EditJobs = (props) => {
-  const {
-    buttonLabel,
-    className
-  } = props;
+  const { buttonLabel, className } = props;
   const [jobList, setJobList] = React.useState([]);
 
-
-  const [jobTitle, setjobTitle] = React.useState('');
-  const [jobLocation, setjobLocation] = React.useState('');
-  const [jobEducation, setjobEducation] = React.useState('');
-  const [jobExperience, setjobExperience] = React.useState('');
-  const [jobSalary, setjobSalary] = React.useState('');
-  const [jobKeySkills, setjobKeySkills] = React.useState('');
-  const [jobDescription, setjobDescription] = React.useState('');
+  const [jobTitle, setjobTitle] = React.useState("");
+  const [jobLocation, setjobLocation] = React.useState("");
+  const [jobEducation, setjobEducation] = React.useState("");
+  const [jobExperience, setjobExperience] = React.useState("");
+  const [jobSalary, setjobSalary] = React.useState("");
+  const [jobKeySkills, setjobKeySkills] = React.useState("");
+  const [jobDescription, setjobDescription] = React.useState("");
 
   const [modal, setModal] = React.useState(false);
   const [EditDetails, setEditDetails] = React.useState([]);
@@ -78,74 +76,73 @@ const EditJobs = (props) => {
       .then((res) => {
         setJobList(res.jobs);
       })
-      .catch((err) => console.log('Err', err))
-  }
-
+      .catch((err) => console.log("Err", err));
+  };
 
   const handleJobTitle = (e) => {
-    setjobTitle(e.target.value)
-  }
+    setjobTitle(e.target.value);
+  };
   const handleJobLocation = (e) => {
-    setjobLocation(e.target.value)
-  }
+    setjobLocation(e.target.value);
+  };
   const handleJobExperience = (e) => {
-    setjobExperience(e.target.value)
-  }
+    setjobExperience(e.target.value);
+  };
   const handleJobSalary = (e) => {
-    setjobSalary(e.target.value)
-  }
+    setjobSalary(e.target.value);
+  };
   const handleJobEducation = (e) => {
-    setjobEducation(e.target.value)
-  }
+    setjobEducation(e.target.value);
+  };
   const handleJobKeyskill = (e) => {
-    setjobKeySkills(e.target.value)
-  }
+    setjobKeySkills(e.target.value);
+  };
   const handleJobDiscription = (e) => {
-    setjobDescription(e.target.value)
-  }
+    setjobDescription(e.target.value);
+  };
 
   const handleJobEdit = (editData) => {
     setModal(true);
-    console.log('Edit Data', editData);
+    console.log("Edit Data", editData);
     setEditDetails(editData);
-    
-  }
-  const ModifyJobDetails = () =>{
-    let api_url = "/api/careers/updatejob/"+EditDetails.id;
+  };
+  const ModifyJobDetails = () => {
+    let api_url = "/api/careers/updatejob/" + EditDetails.id;
     let data = {
-      'jobTitle': (jobTitle) ? jobTitle : EditDetails.job_title,
-      'location': (jobLocation) ? jobLocation : EditDetails.location,
-      'experience': (jobEducation) ? jobEducation : EditDetails.experience,
-      'salary': (jobExperience) ? jobExperience : EditDetails.salary,
-      'education': (jobSalary) ? jobSalary : EditDetails.education,
-      'keySkills': (jobKeySkills) ? jobKeySkills : EditDetails.key_skills,
-      'jobDescription': (jobDescription) ? jobDescription : EditDetails.job_description
-    }
+      jobTitle: jobTitle ? jobTitle : EditDetails.job_title,
+      location: jobLocation ? jobLocation : EditDetails.location,
+      experience: jobEducation ? jobEducation : EditDetails.experience,
+      salary: jobExperience ? jobExperience : EditDetails.salary,
+      education: jobSalary ? jobSalary : EditDetails.education,
+      keySkills: jobKeySkills ? jobKeySkills : EditDetails.key_skills,
+      jobDescription: jobDescription
+        ? jobDescription
+        : EditDetails.job_description,
+    };
     jobApi
       .updatedetails(api_url, data)
-      .then(response => {
+      .then((response) => {
         if (response) {
           setModal(false);
           fetchJobList();
         }
         console.log("Response Data...", response);
-      }).catch(err => console.log('Err', err));
-  }
+      })
+      .catch((err) => console.log("Err", err));
+  };
   const handleJobDelete = (jobId) => {
     let flag = window.confirm("Are You Sure You Want To Delete?");
     if (!!flag) {
-      let api_url = '/api/careers/deletejob/' + jobId;
+      let api_url = "/api/careers/deletejob/" + jobId;
       let data = {
-        'id': jobId
-      }
-      jobApi
-        .deleteDetails(api_url, data)
-        .then(response => {
-          console.log("Response Data...", response);
-          fetchJobList();
-        });
+        id: jobId,
+      };
+      jobApi.deleteDetails(api_url, data).then((response) => {
+        console.log("Response Data...", response);
+        fetchJobList();
+      });
     }
-  }
+  };
   return (
     <React.Fragment>
       <Header />
@@ -178,7 +175,10 @@ const EditJobs = (props) => {
                             </div> */}
                         </Row>
                       </CardHeader>
-                      <Table className="align-items-center table-flush" responsive>
+                      <Table
+                        className="align-items-center table-flush"
+                        responsive
+                      >
                         <thead className="thead-light">
                           <tr>
                             <th scope="col">Title</th>
@@ -186,26 +186,59 @@ const EditJobs = (props) => {
                             <th scope="col">Experience</th>
                             <th scope="col">Salary</th>
                             <th scope="col">Key Skills</th>
-                            <th scope="col" className="text-right">Actions</th>
+                            <th scope="col" className="text-right">
+                              Actions
+                            </th>
                             <th scope="col"></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {
-                            jobList.map((el, index) => {
-                              return (
-                                <tr key={index}>
-                                  <th scope="row">{el.job_title}</th>
-                                  <td>{el.location}</td>
-                                  <td>{el.experience}</td>
-                                  <td>{el.salary}</td>
-                                  <td>{el.key_skills}</td>
-                                  <td className="cursor-pointer" onClick={() => handleJobEdit(el)}><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg></td>
-                                  <td className="cursor-pointer" onClick={() => handleJobDelete(el.id)}><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg></td>
-                                </tr>
-                              )
-                            })
-                          }
+                          {jobList.map((el, index) => {
+                            return (
+                              <tr key={index}>
+                                <th scope="row">{el.job_title}</th>
+                                <td>{el.location}</td>
+                                <td>{el.experience}</td>
+                                <td>{el.salary}</td>
+                                <td>{el.key_skills}</td>
+                                <td
+                                  className="cursor-pointer"
+                                  onClick={() => handleJobEdit(el)}
+                                >
+                                  <svg
+                                    class="w-6 h-6"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                      clip-rule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </td>
+                                <td
+                                  className="cursor-pointer"
+                                  onClick={() => handleJobDelete(el.id)}
+                                >
+                                  <svg
+                                    class="w-6 h-6"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                      clip-rule="evenodd"
+                                    ></path>
+                                  </svg>
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </Table>
                     </Card>
@@ -220,31 +253,111 @@ const EditJobs = (props) => {
           <ModalBody>
             <div class="form bg-white my-2 relative">
               {/* <div class="icon bg-blue-600 text-white w-6 h-6 absolute flex items-center justify-center p-5" style={{left:'-40px'}}><i class="fal fa-phone-volume fa-fw text-2xl transform -rotate-45"></i></div> */}
-              <h3 class="text-2xl text-gray-900 font-semibold">Modify Job Details.</h3>
+              <h3 class="text-2xl text-gray-900 font-semibold">
+                Modify Job Details.
+              </h3>
               {/* <p class="text-gray-600"> To help you choose your property</p> */}
               <div class="flex space-x-5 mt-3">
-                <input required type="text" name="title" id="" placeholder="Title..." class="border p-2  w-1/2" onChange={e => handleJobTitle(e)} defaultValue={(jobTitle) ? jobTitle : EditDetails.job_title} />
-                <input required type="text" name="Location" id="" placeholder="Location..." class="border p-2 w-1/2"  onChange={e => handleJobLocation(e)} defaultValue={(jobLocation) ? jobLocation : EditDetails.location} />
+                <input
+                  required
+                  type="text"
+                  name="title"
+                  id=""
+                  placeholder="Title..."
+                  class="border p-2  w-1/2"
+                  onChange={(e) => handleJobTitle(e)}
+                  defaultValue={jobTitle ? jobTitle : EditDetails.job_title}
+                />
+                <input
+                  required
+                  type="text"
+                  name="Location"
+                  id=""
+                  placeholder="Location..."
+                  class="border p-2 w-1/2"
+                  onChange={(e) => handleJobLocation(e)}
+                  defaultValue={
+                    jobLocation ? jobLocation : EditDetails.location
+                  }
+                />
               </div>
               <div class="flex space-x-5 mt-3">
-                <input required type="text" name="experience" id="" placeholder="Expeirence..." class="border p-2 w-full mt-3"  onChange={e => handleJobExperience(e)} defaultValue={(jobExperience) ? jobExperience : EditDetails.experience} />
-                <input required type="text" name="salary" id="" placeholder="Salary..." class="border p-2 w-full mt-3"  onChange={e => handleJobSalary(e)} defaultValue={(jobSalary) ? jobSalary : EditDetails.salary} />
+                <input
+                  required
+                  type="text"
+                  name="experience"
+                  id=""
+                  placeholder="Expeirence..."
+                  class="border p-2 w-full mt-3"
+                  onChange={(e) => handleJobExperience(e)}
+                  defaultValue={
+                    jobExperience ? jobExperience : EditDetails.experience
+                  }
+                />
+                <input
+                  required
+                  type="text"
+                  name="salary"
+                  id=""
+                  placeholder="Salary..."
+                  class="border p-2 w-full mt-3"
+                  onChange={(e) => handleJobSalary(e)}
+                  defaultValue={jobSalary ? jobSalary : EditDetails.salary}
+                />
               </div>
               <div class="flex space-x-5 mt-3">
-                <input required type="text" name="education" id="" placeholder="Education..." class="border p-2 w-full mt-3"  onChange={e => handleJobEducation(e)} defaultValue={(jobEducation) ? jobEducation : EditDetails.education} />
-                <input required type="text" name="keyskill" id="" placeholder="Key Skills..." class="border p-2 w-full mt-3"  onChange={e => handleJobKeyskill(e)} defaultValue={(jobKeySkills) ? jobKeySkills : EditDetails.key_skills} />
+                <input
+                  required
+                  type="text"
+                  name="education"
+                  id=""
+                  placeholder="Education..."
+                  class="border p-2 w-full mt-3"
+                  onChange={(e) => handleJobEducation(e)}
+                  defaultValue={
+                    jobEducation ? jobEducation : EditDetails.education
+                  }
+                />
+                <input
+                  required
+                  type="text"
+                  name="keyskill"
+                  id=""
+                  placeholder="Key Skills..."
+                  class="border p-2 w-full mt-3"
+                  onChange={(e) => handleJobKeyskill(e)}
+                  defaultValue={
+                    jobKeySkills ? jobKeySkills : EditDetails.key_skills
+                  }
+                />
               </div>
-              <textarea required name="discription" id="" cols="10" rows="3" placeholder="Discription..." class="border p-2 mt-3 w-full"  onChange={e => handleJobDiscription(e)} defaultValue={(jobDescription) ? jobDescription : EditDetails.job_description}></textarea>
+              <textarea
+                required
+                name="discription"
+                id=""
+                cols="10"
+                rows="3"
+                placeholder="Discription..."
+                class="border p-2 mt-3 w-full"
+                onChange={(e) => handleJobDiscription(e)}
+                defaultValue={
+                  jobDescription ? jobDescription : EditDetails.job_description
+                }
+              ></textarea>
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={toggle}>Cancel</Button>
-            <Button color="primary" onClick={() => ModifyJobDetails()}>Edit Job</Button>{' '}
+            <Button color="secondary" onClick={toggle}>
+              Cancel
+            </Button>
+            <Button color="primary" onClick={() => ModifyJobDetails()}>
+              Edit Job
+            </Button>{" "}
           </ModalFooter>
         </Modal>
       </Container>
     </React.Fragment>
   );
-}
+};
 
 export default EditJobs;
