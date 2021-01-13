@@ -22,6 +22,7 @@ import classnames from "classnames";
 import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
+import JobsApi from "../REST/JobsApi";
 // reactstrap components
 import {
   Button,
@@ -35,7 +36,7 @@ import {
   Table,
   Container,
   Row,
-  Col
+  Col,
 } from "reactstrap";
 
 // core components
@@ -43,17 +44,18 @@ import {
   chartOptions,
   parseOptions,
   chartExample1,
-  chartExample2
+  chartExample2,
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
 
 class Index extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       activeNav: 1,
-      chartExample1Data: "data1"
+      chartExample1Data: "data1",
+      appliedJobs: [],
     };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
@@ -64,16 +66,27 @@ class Index extends React.Component {
     this.setState({
       activeNav: index,
       chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
+        this.state.chartExample1Data === "data1" ? "data2" : "data1",
     });
   };
+
+  componentDidMount() {
+    this.getAppliedJobs();
+  }
+
+  getAppliedJobs() {
+    JobsApi.requestGetAppliedJobs("/api/careers/appliedjobs").then((resp) => {
+      this.setState({ appliedJobs: resp.jobs });
+    });
+  }
+
   render() {
     return (
       <>
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          <Row>
+          {/* <Row>
             <Col className="mb-5 mb-xl-0" xl="8">
               <Card className="bg-gradient-default shadow">
                 <CardHeader className="bg-transparent">
@@ -117,7 +130,7 @@ class Index extends React.Component {
                 </CardHeader>
                 <CardBody>
                   {/* Chart */}
-                  <div className="chart">
+          {/* <div className="chart">
                     <Line
                       data={chartExample1[this.state.chartExample1Data]}
                       options={chartExample1.options}
@@ -139,98 +152,76 @@ class Index extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <CardBody>
-                  {/* Chart */}
-                  <div className="chart">
+                <CardBody> */}
+          {/* Chart */}
+          {/* <div className="chart">
                     <Bar
                       data={chartExample2.data}
                       options={chartExample2.options}
                     />
                   </div>
                 </CardBody>
-              </Card>
-            </Col>
-          </Row>
+              </Card> */}
+          {/* </Col> */}
+          {/* </Row> */}
           <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
+            <Col className="mb-5 mb-xl-0" xl="12">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Today's Raised Tickets</h3>
+                      <h3 className="mb-0">Job Applications</h3>
                     </div>
-                    <div className="col text-right">
+                    {/* <div className="col text-right">
                       <Button
                         color="primary"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         size="sm"
                       >
                         See all
                       </Button>
-                    </div>
+                    </div> */}
                   </Row>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Page name</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col">Unique users</th>
-                      <th scope="col">Bounce rate</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Contact No.</th>
+                      {/* <th scope="col">Action</th> */}
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
+                    {this.state.appliedJobs.map((el, index) => (
+                      <tr>
+                        <th scope="row">{el.name}</th>
+                        <td>{el.email}</td>
+                        <td>{el.contact}</td>
+                        {/* <td>
+                          <svg
+                            className="w-8 h-8 ml-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                          </svg>
+                        </td> */}
+                      </tr>
+                    ))}
                   </tbody>
                 </Table>
               </Card>
             </Col>
-            <Col xl="4">
+            {/* <Col xl="4">
               <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
@@ -241,7 +232,7 @@ class Index extends React.Component {
                       <Button
                         color="primary"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={(e) => e.preventDefault()}
                         size="sm"
                       >
                         See all
@@ -337,7 +328,7 @@ class Index extends React.Component {
                   </tbody>
                 </Table>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </>
