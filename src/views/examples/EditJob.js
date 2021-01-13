@@ -44,48 +44,71 @@ import {
 } from "variables/charts.js";
 // core components
 import Header from "components/Headers/Header.js";
+import jobApi from "../../REST/JobsApi.js";
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
-class Maps extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeNav: 1,
-      chartExample1Data: "data1"
-    };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
+
+
+const EditJobs = () => {
+  const [jobList, setJobList] = React.useState([]);
+  React.useEffect(() => {
+    fetchJobList();
+  }, []);
+  const fetchJobList = () => {
+    let api_url = "/api/careers/jobs";
+    jobApi
+      .getList(api_url)
+      .then((res) => {
+        setJobList(res.jobs);
+      })
+      .catch((err) => console.log('Err', err))
+  }
+  const handleJobEdit = () => {
+    // let api_url = "/api/careers/createjob";
+    // jobApi
+    //   .updatedetails(api_url, data)
+    //   .then(response => {
+    //     if (response) {
+    //       this.state = {};
+    //     }
+    //     console.log("Response Data...", response);
+    //   }).catch(err => console.log('Err', err));
+  }
+  const handleJobDelete = (jobId) => {
+    let flag = window.confirm("Are You Sure You Want To Delete?");
+    if (!!flag) {
+      let api_url = '/api/careers/deletejob/' + jobId;
+      let data = {
+        'id': jobId
+      }
+      jobApi
+        .deleteDetails(api_url, data)
+        .then(response => {
+          console.log("Response Data...", response);
+          fetchJobList();
+        });
     }
   }
-  toggleNavs = (e, index) => {
-    e.preventDefault();
-    this.setState({
-      activeNav: index,
-      chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
-    });
-  };
-  render() {
-    return (
-      <>
-        <Header />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          <Row>
-            <div className="col">
-              <Card className="shadow border-0">
-                <CardHeader className=" bg-transparent">
-                  <h3 className=" mb-0">Edit Job</h3>
-                </CardHeader>
-                <CardBody>
-                  <Row className="mt-5">
-                    <Col className="mb-5 mb-xl-0" xl="8">
-                      <Card className="shadow">
-                        <CardHeader className="border-0">
-                          <Row className="align-items-center">
-                            <div className="col">
-                              <h3 className="mb-0">Today's Raised Tickets</h3>
-                            </div>
-                            <div className="col text-right">
+  return (
+    <React.Fragment>
+      <Header />
+      {/* Page content */}
+      <Container className="mt--7" fluid>
+        <Row>
+          <div className="col">
+            <Card className="shadow border-0">
+              <CardHeader className=" bg-transparent">
+                <h3 className=" mb-0">Edit Job</h3>
+              </CardHeader>
+              <CardBody>
+                <Row className="mt-0">
+                  <Col className="mb-5 mb-xl-0" xl="12">
+                    <Card className="shadow">
+                      <CardHeader className="border-0">
+                        <Row className="align-items-center">
+                          <div className="col">
+                            <h3 className="mb-0">Edit Job's</h3>
+                          </div>
+                          {/* <div className="col text-right">
                               <Button
                                 color="primary"
                                 href="#pablo"
@@ -94,77 +117,49 @@ class Maps extends React.Component {
                               >
                                 See all
                       </Button>
-                            </div>
-                          </Row>
-                        </CardHeader>
-                        <Table className="align-items-center table-flush" responsive>
-                          <thead className="thead-light">
-                            <tr>
-                              <th scope="col">Page name</th>
-                              <th scope="col">Visitors</th>
-                              <th scope="col">Unique users</th>
-                              <th scope="col">Bounce rate</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <th scope="row">/argon/</th>
-                              <td>4,569</td>
-                              <td>340</td>
-                              <td>
-                                <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">/argon/index.html</th>
-                              <td>3,985</td>
-                              <td>319</td>
-                              <td>
-                                <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">/argon/charts.html</th>
-                              <td>3,513</td>
-                              <td>294</td>
-                              <td>
-                                <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">/argon/tables.html</th>
-                              <td>2,050</td>
-                              <td>147</td>
-                              <td>
-                                <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                            </tr>
-                            <tr>
-                              <th scope="row">/argon/profile.html</th>
-                              <td>1,795</td>
-                              <td>190</td>
-                              <td>
-                                <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                            </tr>
-                          </tbody>
-                        </Table>
-                      </Card>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </div>
-          </Row>
-        </Container>
-      </>
-    );
-  }
+                            </div> */}
+                        </Row>
+                      </CardHeader>
+                      <Table className="align-items-center table-flush" responsive>
+                        <thead className="thead-light">
+                          <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Experience</th>
+                            <th scope="col">Salary</th>
+                            <th scope="col">Key Skills</th>
+                            <th scope="col" className="text-right">Actions</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+                            jobList.map((el, index) => {
+                              return (
+                                <tr key={index}>
+                                  <th scope="row">{el.job_title}</th>
+                                  <td>{el.location}</td>
+                                  <td>{el.experience}</td>
+                                  <td>{el.salary}</td>
+                                  <td>{el.key_skills}</td>
+                                  <td className="cursor-pointer" onClick={() => handleJobEdit(el)}><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg></td>
+                                  <td className="cursor-pointer" onClick={() => handleJobDelete(el.id)}><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg></td>
+                                </tr>
+                              )
+                            })
+                          }
+                        </tbody>
+                      </Table>
+                    </Card>
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          </div>
+        </Row>
+      </Container>
+    </React.Fragment>
+  );
 }
 
-export default Maps;
+export default EditJobs;

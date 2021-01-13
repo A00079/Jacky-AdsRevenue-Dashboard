@@ -23,6 +23,7 @@
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
   "homepage": "https://www.curvicare.com/portal",
+  "proxy":"https://adsrevenue.co",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

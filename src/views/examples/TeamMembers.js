@@ -17,76 +17,53 @@
 */
 import React from "react";
 // react plugin used to create google maps
+// node.js library that concatenates classes (strings)
+import classnames from "classnames";
+// javascipt plugin for creating charts
+import Chart from "chart.js";
+// react plugin used to create charts
+import { Line, Bar } from "react-chartjs-2";
+// reactstrap components
 import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker
-} from "react-google-maps";
+  Button,
+  NavItem,
+  NavLink,
+  Nav,
+  Progress,
+  Table,
+  Col
+} from "reactstrap";
 
 // reactstrap components
 import { Card, Container, CardHeader, CardBody, Row } from "reactstrap";
-
+import {
+  chartOptions,
+  parseOptions,
+  chartExample1,
+  chartExample2
+} from "variables/charts.js";
 // core components
 import Header from "components/Headers/Header.js";
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
-const MapWrapper = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap
-      defaultZoom={12}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
-      defaultOptions={{
-        scrollwheel: false,
-        styles: [
-          {
-            featureType: "administrative",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#444444" }]
-          },
-          {
-            featureType: "landscape",
-            elementType: "all",
-            stylers: [{ color: "#f2f2f2" }]
-          },
-          {
-            featureType: "poi",
-            elementType: "all",
-            stylers: [{ visibility: "off" }]
-          },
-          {
-            featureType: "road",
-            elementType: "all",
-            stylers: [{ saturation: -100 }, { lightness: 45 }]
-          },
-          {
-            featureType: "road.highway",
-            elementType: "all",
-            stylers: [{ visibility: "simplified" }]
-          },
-          {
-            featureType: "road.arterial",
-            elementType: "labels.icon",
-            stylers: [{ visibility: "off" }]
-          },
-          {
-            featureType: "transit",
-            elementType: "all",
-            stylers: [{ visibility: "off" }]
-          },
-          {
-            featureType: "water",
-            elementType: "all",
-            stylers: [{ color: "#5e72e4" }, { visibility: "on" }]
-          }
-        ]
-      }}
-    >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }} />
-    </GoogleMap>
-  ))
-);
-
-class Maps extends React.Component {
+class TeamMembers extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeNav: 1,
+      chartExample1Data: "data1"
+    };
+    if (window.Chart) {
+      parseOptions(Chart, chartOptions());
+    }
+  }
+  toggleNavs = (e, index) => {
+    e.preventDefault();
+    this.setState({
+      activeNav: index,
+      chartExample1Data:
+        this.state.chartExample1Data === "data1" ? "data2" : "data1"
+    });
+  };
   render() {
     return (
       <>
@@ -96,24 +73,55 @@ class Maps extends React.Component {
           <Row>
             <div className="col">
               <Card className="shadow border-0">
-              <CardHeader className=" bg-transparent">
-                  <h3 className=" mb-0">Team Members</h3>
+                <CardHeader className=" bg-transparent">
+                  <h3 className=" mb-0">Team Member's</h3>
                 </CardHeader>
-                <CardBody></CardBody>
-                {/* <MapWrapper
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
-                  loadingElement={<div style={{ height: `100%` }} />}
-                  containerElement={
-                    <div
-                      style={{ height: `600px` }}
-                      className="map-canvas"
-                      id="map-canvas"
-                    />
-                  }
-                  mapElement={
-                    <div style={{ height: `100%`, borderRadius: "inherit" }} />
-                  }
-                /> */}
+                <CardBody>
+                  <Row className="mt-0">
+                    <Col className="mb-5 mb-xl-0" xl="12">
+                      <Card className="shadow">
+                        <CardHeader className="border-0">
+                          <Row className="align-items-center">
+                            <div className="col">
+                              <h3 className="mb-0">View Team Member's</h3>
+                            </div>
+                            {/* <div className="col text-right">
+                              <Button
+                                color="primary"
+                                href="#pablo"
+                                onClick={e => e.preventDefault()}
+                                size="sm"
+                              >
+                                See all
+                      </Button>
+                            </div> */}
+                          </Row>
+                        </CardHeader>
+                        <Table className="align-items-center table-flush" responsive>
+                          <thead className="thead-light">
+                            <tr>
+                              <th scope="col">Page name</th>
+                              <th scope="col">Visitors</th>
+                              <th scope="col">Unique users</th>
+                              <th scope="col">Bounce rate</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <th scope="row">/argon/</th>
+                              <td>4,569</td>
+                              <td>340</td>
+                              <td>
+                                <i className="fas fa-arrow-up text-success mr-3" />{" "}
+                                46,53%
+                            </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </Card>
+                    </Col>
+                  </Row>
+                </CardBody>
               </Card>
             </div>
           </Row>
@@ -123,4 +131,4 @@ class Maps extends React.Component {
   }
 }
 
-export default Maps;
+export default TeamMembers;

@@ -361,6 +361,7 @@ import {
 import { Card, Container, CardHeader, CardBody, Row } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
+import postDetailsApi from "../../REST/JobsApi.js";
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 const MapWrapper = withScriptjs(
   withGoogleMap(props => (
@@ -421,24 +422,39 @@ const MapWrapper = withScriptjs(
 class Maps extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       title: '',
       Location: '',
-      expericnce: '',
+      experience: '',
       salary: '',
       education: '',
       keyskill: '',
       discription: ''
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleChange(formfield,event) {
-    this.setState({[formfield]: event.target.value});
+  handleChange(formfield, event) {
+    this.setState({ [formfield]: event.target.value });
   }
-  handleSubmit(event) {
-    alert('A job was created: ' + JSON.stringify(this.state));
-    event.preventDefault();
+  postJobData() {
+    let api_url = "/api/careers/createjob";
+    let data = {
+      'jobTitle': this.state.title,
+      'location': this.state.Location,
+      'experience': this.state.experience,
+      'salary': this.state.salary,
+      'education': this.state.education,
+      'keySkills': this.state.keyskill,
+      'jobDescription': this.state.discription
+    }
+    postDetailsApi
+      .postdetails(api_url, data)
+      .then(response => {
+        if (response) {
+          this.state = {};
+        }
+        console.log("Response Data...", response);
+      }).catch(err => console.log('Err', err));
   }
   render() {
     return (
@@ -453,30 +469,33 @@ class Maps extends React.Component {
                   <h3 className=" mb-0">Create Job</h3>
                 </CardHeader>
                 <CardBody>
-                  <form class="form bg-white my-2 relative" onSubmit={this.handleSubmit}>
+                  <div class="form bg-white my-2 relative">
                     {/* <div class="icon bg-blue-600 text-white w-6 h-6 absolute flex items-center justify-center p-5" style={{left:'-40px'}}><i class="fal fa-phone-volume fa-fw text-2xl transform -rotate-45"></i></div> */}
                     <h3 class="text-2xl text-gray-900 font-semibold">Let's Create New Job !</h3>
                     {/* <p class="text-gray-600"> To help you choose your property</p> */}
                     <div class="flex space-x-5 mt-3">
-                      <input required type="text" name="title" id="" placeholder="Title..."   class="border p-2  w-1/2" value={this.state.title} onChange={(event)=> this.handleChange('title',event)} />
-                      <input required type="text" name="Location" id="" placeholder="Location..." class="border p-2 w-1/2" value={this.state.Location} onChange={(event)=> this.handleChange('Location',event)} />
+                      <input required type="text" name="title" id="" placeholder="Title..." class="border p-2  w-1/2" value={this.state.title} onChange={(event) => this.handleChange('title', event)} />
+                      <input required type="text" name="Location" id="" placeholder="Location..." class="border p-2 w-1/2" value={this.state.Location} onChange={(event) => this.handleChange('Location', event)} />
                     </div>
                     <div class="flex space-x-5 mt-3">
-                      <input required type="text" name="expericnce" id="" placeholder="Expeirence..." class="border p-2 w-full mt-3" value={this.state.expericnce} onChange={(event)=> this.handleChange('expericnce',event)} />
-                      <input required type="text" name="salary" id="" placeholder="Salary..." class="border p-2 w-full mt-3" value={this.state.salary} onChange={(event)=> this.handleChange('salary',event)} />
+                      <input required type="text" name="experience" id="" placeholder="Expeirence..." class="border p-2 w-full mt-3" value={this.state.experience} onChange={(event) => this.handleChange('experience', event)} />
+                      <input required type="text" name="salary" id="" placeholder="Salary..." class="border p-2 w-full mt-3" value={this.state.salary} onChange={(event) => this.handleChange('salary', event)} />
                     </div>
                     <div class="flex space-x-5 mt-3">
-                      <input required type="text" name="education" id="" placeholder="Education..." class="border p-2 w-full mt-3" value={this.state.education} onChange={(event)=> this.handleChange('education',event)} />
-                      <input required type="text" name="keyskill" id="" placeholder="Key Skills..." class="border p-2 w-full mt-3" value={this.state.keyskill} onChange={(event)=> this.handleChange('keyskill',event)} />
+                      <input required type="text" name="education" id="" placeholder="Education..." class="border p-2 w-full mt-3" value={this.state.education} onChange={(event) => this.handleChange('education', event)} />
+                      <input required type="text" name="keyskill" id="" placeholder="Key Skills..." class="border p-2 w-full mt-3" value={this.state.keyskill} onChange={(event) => this.handleChange('keyskill', event)} />
                     </div>
-                    <textarea required name="discription" id="" cols="10" rows="3" placeholder="Discription..." class="border p-2 mt-3 w-full" value={this.state.discription} onChange={(event)=> this.handleChange('discription',event)}></textarea>
+                    <textarea required name="discription" id="" cols="10" rows="3" placeholder="Discription..." class="border p-2 mt-3 w-full" value={this.state.discription} onChange={(event) => this.handleChange('discription', event)}></textarea>
                     {/* <p class="font-bold text-sm mt-3">GDPR Agreement *</p> */}
                     {/* <div class="flex items-baseline space-x-2 mt-2">
                       <input type="checkbox" name="" id="" class="inline-block" />
                       <p class="text-gray-600 text-sm">I consent to having this website store my submitted information so they can respond to my inquiry.</p>
                     </div> */}
-                    <input required type="submit" value="Create Job" class="cursor-pointer w-30  rounded-md mt-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-2" />
-                  </form>
+                    <button onClick={() =>this.postJobData()} className="cursor-pointer w-30  rounded-md mt-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-2">
+                      Create Job
+                    </button>
+                    {/* <input required type="submit" value="Create Job" class="cursor-pointer w-30  rounded-md mt-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-2" /> */}
+                  </div>
                 </CardBody>
                 {/* <MapWrapper
                   googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"
