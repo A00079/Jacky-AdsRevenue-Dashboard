@@ -27,7 +27,7 @@ class Header extends React.Component {
     this.state = {
       totalJobs: 0,
       totalAppliedJobs: 0,
-      totalEmp: 0,
+      totalEmp: 8,
     }
   }
   componentDidMount() {
@@ -39,9 +39,8 @@ class Header extends React.Component {
       .getList(api_url)
       .then((res) => {
         console.log('Dashboard info',res);
-        this.setState({});
-        this.setState({});
-        this.setState({});
+        this.setState({totalAppliedJobs:  res.info.totalAppliedJobs});
+        this.setState({totalJobs : res.info.totalJobs});
       })
       .catch((err) => console.log("Err", err));
   }
@@ -153,7 +152,7 @@ class Header extends React.Component {
                             Team Members
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            10
+                            {this.state.totalEmp}
                           </span>
                         </div>
                         <Col className="col-auto">

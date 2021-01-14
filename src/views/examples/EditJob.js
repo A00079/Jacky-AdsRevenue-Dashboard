@@ -216,6 +216,7 @@ const EditJobs = (props) => {
                       >
                         <thead className="thead-light">
                           <tr>
+                            <th scope="col">Sr.no</th>
                             <th scope="col">Title</th>
                             <th scope="col">Location</th>
                             <th scope="col">Experience</th>
@@ -231,6 +232,7 @@ const EditJobs = (props) => {
                           {jobList.map((el, index) => {
                             return (
                               <tr key={index}>
+                                <th scope="row">{index+1}</th>
                                 <th scope="row">{el.job_title}</th>
                                 <td>{el.location}</td>
                                 <td>{el.experience}</td>
@@ -241,7 +243,7 @@ const EditJobs = (props) => {
                                   onClick={() => handleJobEdit(el)}
                                 >
                                   <svg
-                                    class="w-6 h-6"
+                                    class="w-6 h-6 text-blue-600"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -259,7 +261,7 @@ const EditJobs = (props) => {
                                   onClick={() => handleJobDelete(el.id)}
                                 >
                                   <svg
-                                    class="w-6 h-6"
+                                    class="w-6 h-6 text-red-600"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg"

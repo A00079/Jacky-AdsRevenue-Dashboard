@@ -33,7 +33,6 @@ class Admin extends React.Component {
     this.refs.mainContent.scrollTop = 0;
   }
   componentDidMount(){
-    console.log('hiiiiiiiii');
     if(sessionStorage.getItem("token") !== 'xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505'){
       this.props.history.push('/auth/login');
     }
