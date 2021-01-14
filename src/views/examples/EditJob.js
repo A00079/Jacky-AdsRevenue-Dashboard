@@ -49,6 +49,8 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import jobApi from "../../REST/JobsApi.js";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
 
 const EditJobs = (props) => {
@@ -103,33 +105,65 @@ const EditJobs = (props) => {
 
   const handleJobEdit = (editData) => {
     setModal(true);
-    console.log("Edit Data", editData);
     setEditDetails(editData);
+    setjobTitle(editData.job_title);
+    setjobLocation(editData.location);
+    setjobExperience(editData.experience);
+    setjobSalary(editData.salary);
+    setjobEducation(editData.education);
+    setjobKeySkills(editData.key_skills);
+    setjobDescription(editData.job_description);
   };
   const ModifyJobDetails = () => {
-    let api_url = "/api/careers/updatejob/" + EditDetails.id;
-    let data = {
-      jobTitle: jobTitle ? jobTitle : EditDetails.job_title,
-      location: jobLocation ? jobLocation : EditDetails.location,
-      experience: jobEducation ? jobEducation : EditDetails.experience,
-      salary: jobExperience ? jobExperience : EditDetails.salary,
-      education: jobSalary ? jobSalary : EditDetails.education,
-      keySkills: jobKeySkills ? jobKeySkills : EditDetails.key_skills,
-      jobDescription: jobDescription
-        ? jobDescription
-        : EditDetails.job_description,
-    };
-    jobApi
-      .updatedetails(api_url, data)
-      .then((response) => {
-        if (response) {
-          setModal(false);
-          fetchJobList();
-        }
-        console.log("Response Data...", response);
-      })
-      .catch((err) => console.log("Err", err));
+    if (!!jobTitle && !!jobLocation && !!jobEducation && !!jobExperience && !!jobSalary && !!jobKeySkills && !!jobDescription) {
+      let api_url = "/api/careers/updatejob/" + EditDetails.id;
+      let data = {
+        jobTitle: jobTitle,
+        location: jobLocation,
+        experience: jobEducation,
+        salary: jobExperience,
+        education: jobSalary,
+        keySkills: jobKeySkills,
+        jobDescription: jobDescription,
+      };
+      jobApi
+        .updatedetails(api_url, data)
+        .then((response) => {
+          if (response) {
+            setModal(false);
+            fetchJobList();
+            notify('success', 'Job Edited Successfully!');
+          }
+          console.log("Response Data...", response);
+        })
+        .catch((err) => console.log("Err", err));
+    } else {
+      notify('error', 'Please Fill All Fields!');
+    }
   };
+  const notify = (flag, msg) => {
+    if (flag === 'error') {
+      toast.error(msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (flag === 'success') {
+      toast.success(msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }
   const handleJobDelete = (jobId) => {
     let flag = window.confirm("Are You Sure You Want To Delete?");
     if (!!flag) {
@@ -140,6 +174,7 @@ const EditJobs = (props) => {
       jobApi.deleteDetails(api_url, data).then((response) => {
         console.log("Response Data...", response);
         fetchJobList();
+        notify('success', 'Job Deleted Successfully.');
       });
     }
   };
@@ -356,6 +391,19 @@ const EditJobs = (props) => {
           </ModalFooter>
         </Modal>
       </Container>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
     </React.Fragment>
   );
 };

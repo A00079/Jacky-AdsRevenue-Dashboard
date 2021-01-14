@@ -23,7 +23,7 @@
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
   "homepage": "https://www.curvicare.com/portal",
-  "proxy":"https://adsrevenue.co",
+  "proxy": "https://adsrevenue.co",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -59,6 +59,8 @@
     "react-google-maps": "9.4.5",
     "react-router-dom": "5.1.2",
     "react-scripts": "4.0.0",
+    "react-toast-notifications": "^2.4.0",
+    "react-toastify": "^6.2.0",
     "reactstrap": "8.4.1"
   },
   "devDependencies": {

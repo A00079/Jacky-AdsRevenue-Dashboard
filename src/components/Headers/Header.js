@@ -19,12 +19,36 @@ import React from "react";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import jobApi from "../../REST/JobsApi.js";
 
 class Header extends React.Component {
+  constructor(props) {
+    super();
+    this.state = {
+      totalJobs: 0,
+      totalAppliedJobs: 0,
+      totalEmp: 0,
+    }
+  }
+  componentDidMount() {
+    this.fetchPanelDetails();
+  }
+  fetchPanelDetails() {
+    let api_url = "/api/dashboard/info";
+    jobApi
+      .getList(api_url)
+      .then((res) => {
+        console.log('Dashboard info',res);
+        this.setState({});
+        this.setState({});
+        this.setState({});
+      })
+      .catch((err) => console.log("Err", err));
+  }
   render() {
     return (
       <>
-        <div className="header pb-8 pt-5 pt-md-8" style={{background: 'linear-gradient(90deg, rgb(255, 134, 87) 0%, rgb(255, 50, 37) 120%)'}}>
+        <div className="header pb-8 pt-5 pt-md-8" style={{ background: 'linear-gradient(90deg, rgb(255, 134, 87) 0%, rgb(255, 50, 37) 120%)' }}>
           <Container fluid>
             <div className="header-body">
               {/* Card stats */}
@@ -71,7 +95,7 @@ class Header extends React.Component {
                             Total Jobs
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            2,356
+                            {this.state.totalJobs}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -82,9 +106,9 @@ class Header extends React.Component {
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-danger mr-2">
-                          <i className="fas fa-arrow-down" /> 3.48%
+                          <i className="fas fa-arrow-up" />
                         </span>{" "}
-                        <span className="text-nowrap">Since last week</span>
+                        <span className="text-nowrap">Last Updated Today</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -100,7 +124,7 @@ class Header extends React.Component {
                           >
                             Jobs Applied
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">{this.state.totalAppliedJobs}</span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -110,9 +134,9 @@ class Header extends React.Component {
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-warning mr-2">
-                          <i className="fas fa-arrow-down" /> 1.10%
+                          <i className="fas fa-arrow-up" />
                         </span>{" "}
-                        <span className="text-nowrap">Since yesterday</span>
+                        <span className="text-nowrap">Last Updated Today</span>
                       </p>
                     </CardBody>
                   </Card>
@@ -129,7 +153,7 @@ class Header extends React.Component {
                             Team Members
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            49,65%
+                            10
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -140,9 +164,9 @@ class Header extends React.Component {
                       </Row>
                       <p className="mt-3 mb-0 text-muted text-sm">
                         <span className="text-success mr-2">
-                          <i className="fas fa-arrow-up" /> 12%
+                          <i className="fas fa-arrow-up" />
                         </span>{" "}
-                        <span className="text-nowrap">Since last month</span>
+                        <span className="text-nowrap">Last Updated Today</span>
                       </p>
                     </CardBody>
                   </Card>

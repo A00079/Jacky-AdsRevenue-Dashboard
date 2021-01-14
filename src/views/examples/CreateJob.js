@@ -362,64 +362,10 @@ import { Card, Container, CardHeader, CardBody, Row } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
 import postDetailsApi from "../../REST/JobsApi.js";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // mapTypeId={google.maps.MapTypeId.ROADMAP}
-const MapWrapper = withScriptjs(
-  withGoogleMap(props => (
-    <GoogleMap
-      defaultZoom={12}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
-      defaultOptions={{
-        scrollwheel: false,
-        styles: [
-          {
-            featureType: "administrative",
-            elementType: "labels.text.fill",
-            stylers: [{ color: "#444444" }]
-          },
-          {
-            featureType: "landscape",
-            elementType: "all",
-            stylers: [{ color: "#f2f2f2" }]
-          },
-          {
-            featureType: "poi",
-            elementType: "all",
-            stylers: [{ visibility: "off" }]
-          },
-          {
-            featureType: "road",
-            elementType: "all",
-            stylers: [{ saturation: -100 }, { lightness: 45 }]
-          },
-          {
-            featureType: "road.highway",
-            elementType: "all",
-            stylers: [{ visibility: "simplified" }]
-          },
-          {
-            featureType: "road.arterial",
-            elementType: "labels.icon",
-            stylers: [{ visibility: "off" }]
-          },
-          {
-            featureType: "transit",
-            elementType: "all",
-            stylers: [{ visibility: "off" }]
-          },
-          {
-            featureType: "water",
-            elementType: "all",
-            stylers: [{ color: "#5e72e4" }, { visibility: "on" }]
-          }
-        ]
-      }}
-    >
-      <Marker position={{ lat: 40.748817, lng: -73.985428 }} />
-    </GoogleMap>
-  ))
-);
-
-class Maps extends React.Component {
+class CreateJob extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -436,25 +382,60 @@ class Maps extends React.Component {
   handleChange(formfield, event) {
     this.setState({ [formfield]: event.target.value });
   }
-  postJobData() {
-    let api_url = "/api/careers/createjob";
-    let data = {
-      'jobTitle': this.state.title,
-      'location': this.state.Location,
-      'experience': this.state.experience,
-      'salary': this.state.salary,
-      'education': this.state.education,
-      'keySkills': this.state.keyskill,
-      'jobDescription': this.state.discription
+  notify(flag, msg) {
+    if (flag === 'error') {
+      toast.error(msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (flag === 'success') {
+      toast.success(msg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-    postDetailsApi
-      .postdetails(api_url, data)
-      .then(response => {
-        if (response) {
-          this.state = {};
-        }
-        console.log("Response Data...", response);
-      }).catch(err => console.log('Err', err));
+  }
+  postJobData() {
+    if (!!this.state.title && !!this.state.Location && !!this.state.experience && !!this.state.salary && !!this.state.education && !!this.state.keyskill && !!this.state.discription) {
+      let api_url = "/api/careers/createjob";
+      let data = {
+        'jobTitle': this.state.title,
+        'location': this.state.Location,
+        'experience': this.state.experience,
+        'salary': this.state.salary,
+        'education': this.state.education,
+        'keySkills': this.state.keyskill,
+        'jobDescription': this.state.discription
+      }
+      postDetailsApi
+        .postdetails(api_url, data)
+        .then(response => {
+          if (response) {
+            this.state = {};
+            document.getElementById('title').value = "";
+            document.getElementById('Location').value = "";
+            document.getElementById('experience').value = "";
+            document.getElementById('salary').value = "";
+            document.getElementById('education').value = "";
+            document.getElementById('keyskill').value = "";
+            document.getElementById('discription').value = "";
+            this.notify('success', 'Job Created Successfully.');
+          }
+          console.log("Response Data...", response);
+        }).catch(err => console.log('Err', err));
+    } else {
+      this.notify('error', 'Please Fill All Fields!');
+    }
   }
   render() {
     return (
@@ -474,24 +455,24 @@ class Maps extends React.Component {
                     <h3 class="text-2xl text-gray-900 font-semibold">Let's Create New Job !</h3>
                     {/* <p class="text-gray-600"> To help you choose your property</p> */}
                     <div class="flex space-x-5 mt-3">
-                      <input required type="text" name="title" id="" placeholder="Title..." class="border p-2  w-1/2" value={this.state.title} onChange={(event) => this.handleChange('title', event)} />
-                      <input required type="text" name="Location" id="" placeholder="Location..." class="border p-2 w-1/2" value={this.state.Location} onChange={(event) => this.handleChange('Location', event)} />
+                      <input required type="text" name="title" id="title" placeholder="Title..." class="border p-2  w-1/2" value={this.state.title} onChange={(event) => this.handleChange('title', event)} />
+                      <input required type="text" name="Location" id="Location" placeholder="Location..." class="border p-2 w-1/2" value={this.state.Location} onChange={(event) => this.handleChange('Location', event)} />
                     </div>
                     <div class="flex space-x-5 mt-3">
-                      <input required type="text" name="experience" id="" placeholder="Expeirence..." class="border p-2 w-full mt-3" value={this.state.experience} onChange={(event) => this.handleChange('experience', event)} />
-                      <input required type="text" name="salary" id="" placeholder="Salary..." class="border p-2 w-full mt-3" value={this.state.salary} onChange={(event) => this.handleChange('salary', event)} />
+                      <input required type="text" name="experience" id="experience" placeholder="Expeirence..." class="border p-2 w-full mt-3" value={this.state.experience} onChange={(event) => this.handleChange('experience', event)} />
+                      <input required type="text" name="salary" id="salary" placeholder="Salary..." class="border p-2 w-full mt-3" value={this.state.salary} onChange={(event) => this.handleChange('salary', event)} />
                     </div>
                     <div class="flex space-x-5 mt-3">
-                      <input required type="text" name="education" id="" placeholder="Education..." class="border p-2 w-full mt-3" value={this.state.education} onChange={(event) => this.handleChange('education', event)} />
-                      <input required type="text" name="keyskill" id="" placeholder="Key Skills..." class="border p-2 w-full mt-3" value={this.state.keyskill} onChange={(event) => this.handleChange('keyskill', event)} />
+                      <input required type="text" name="education" id="education" placeholder="Education..." class="border p-2 w-full mt-3" value={this.state.education} onChange={(event) => this.handleChange('education', event)} />
+                      <input required type="text" name="keyskill" id="keyskill" placeholder="Key Skills..." class="border p-2 w-full mt-3" value={this.state.keyskill} onChange={(event) => this.handleChange('keyskill', event)} />
                     </div>
-                    <textarea required name="discription" id="" cols="10" rows="3" placeholder="Discription..." class="border p-2 mt-3 w-full" value={this.state.discription} onChange={(event) => this.handleChange('discription', event)}></textarea>
+                    <textarea required name="discription" id="discription" cols="10" rows="3" placeholder="Discription..." class="border p-2 mt-3 w-full" value={this.state.discription} onChange={(event) => this.handleChange('discription', event)}></textarea>
                     {/* <p class="font-bold text-sm mt-3">GDPR Agreement *</p> */}
                     {/* <div class="flex items-baseline space-x-2 mt-2">
                       <input type="checkbox" name="" id="" class="inline-block" />
                       <p class="text-gray-600 text-sm">I consent to having this website store my submitted information so they can respond to my inquiry.</p>
                     </div> */}
-                    <button onClick={() =>this.postJobData()} className="cursor-pointer w-30  rounded-md mt-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-2">
+                    <button onClick={() => this.postJobData()} className="cursor-pointer w-30  rounded-md mt-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-2">
                       Create Job
                     </button>
                     {/* <input required type="submit" value="Create Job" class="cursor-pointer w-30  rounded-md mt-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold p-2" /> */}
@@ -515,9 +496,22 @@ class Maps extends React.Component {
             </div>
           </Row>
         </Container>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {/* Same as */}
+        <ToastContainer />
       </>
     );
   }
 }
 
-export default Maps;
+export default CreateJob;

@@ -186,6 +186,7 @@ class Index extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
+                      <th scope="col">Sr.no</th>
                       <th scope="col">Name</th>
                       <th scope="col">Email</th>
                       <th scope="col">Contact No.</th>
@@ -195,6 +196,7 @@ class Index extends React.Component {
                   <tbody>
                     {this.state.appliedJobs.map((el, index) => (
                       <tr>
+                        <th scope="row">{index+1}</th>
                         <th scope="row">{el.name}</th>
                         <td>{el.email}</td>
                         <td>{el.contact}</td>

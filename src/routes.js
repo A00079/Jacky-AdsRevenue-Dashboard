@@ -57,7 +57,7 @@ var routes = [
   {
     path: "/editjob",
     name: "Edit Job",
-    icon: "ni ni-scissors text-red",
+    icon: "fas fa-user-edit text-red",
     component: EditJob,
     layout: "/portal"
   },
