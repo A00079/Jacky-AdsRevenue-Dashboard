@@ -42,7 +42,7 @@ class Footer extends React.Component {
 
           <Col xl="6">
             <Nav className="nav-footer justify-content-center justify-content-xl-end">
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   href="https://www.creative-tim.com?ref=adr-admin-footer"
                   rel="noopener noreferrer"
@@ -50,9 +50,9 @@ class Footer extends React.Component {
                 >
                   AdsRevenue
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
 
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
                   rel="noopener noreferrer"
@@ -60,9 +60,9 @@ class Footer extends React.Component {
                 >
                   About Us
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
 
-              <NavItem>
+              {/* <NavItem>
                 <NavLink
                   href="http://blog.creative-tim.com?ref=adr-admin-footer"
                   rel="noopener noreferrer"
@@ -70,7 +70,7 @@ class Footer extends React.Component {
                 >
                   Blog
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
 
               <NavItem>
                 <NavLink
