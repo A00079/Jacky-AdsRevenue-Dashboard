@@ -32,6 +32,12 @@ class Admin extends React.Component {
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
   }
+  componentDidMount(){
+    console.log('hiiiiiiiii');
+    if(sessionStorage.getItem("token") !== 'xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505'){
+      this.props.history.push('/auth/login');
+    }
+  }
   getRoutes = routes => {
     return routes.map((prop, key) => {
       if (prop.layout === "/portal") {
@@ -78,7 +84,7 @@ class Admin extends React.Component {
           />
           <Switch>
             {this.getRoutes(routes)}
-            <Redirect from="*" to="/portal/index" />
+            {/* <Redirect from="*" to="/portal/index" /> */}
           </Switch>
           <Container fluid>
             <AdminFooter />

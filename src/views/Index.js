@@ -60,11 +60,6 @@ class Index extends React.Component {
       parseOptions(Chart, chartOptions());
     }
   }
-  componentDidMount(){
-    if(sessionStorage.getItem("token") !== 'xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505'){
-      this.props.history.push('/auth/login');
-    }
-  }
   toggleNavs = (e, index) => {
     e.preventDefault();
     this.setState({

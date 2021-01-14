@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect } from "react";
 
 // reactstrap components
 import {
@@ -33,27 +33,30 @@ import {
   Col
 } from "reactstrap";
 import logo from "../../assets/img/brand/logo.png";
-
+import { useHistory } from "react-router-dom";
 const Login = (props) => {
+  const history = useHistory();
   const [authEmail, setAuthEmail] = React.useState('');
   const [authPass, setAuthPass] = React.useState('');
 
-  const handleAuthEmail = (e) =>{
-    console.log('Email',e.target.value);
+  const handleAuthEmail = (e) => {
+    console.log('Email', e.target.value);
     setAuthEmail(e.target.value);
   }
-  const handleAuthPass = (e) =>{
+  const handleAuthPass = (e) => {
     setAuthPass(e.target.value);
   }
-
-  const handleSignin = () =>{
-    console.log('authEmail',authEmail,authPass)
-    if(authEmail === "jaitiwari1020@gmail.com" && authPass === "adsrevenue@1020"){
+  useEffect(() => {
+    if (sessionStorage.getItem("token") === 'xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505') {
+      history.push("/portal/index");
+    }
+  }, []);
+  const handleSignin = () => {
+    console.log('authEmail', authEmail, authPass)
+    if (authEmail === "jaitiwari1020@gmail.com" && authPass === "adsrevenue@1020") {
       sessionStorage.setItem("token", "xxx-snfh0FBVD474-BCDBVD-VDVBDV-484505");
-      setTimeout(()=>{
-        props.history.push("portal/index");
-      },700)
-    }else{
+      history.push("/portal/index");
+    } else {
       alert('Wrong ID or Password Combination');
     }
   }
@@ -80,7 +83,7 @@ const Login = (props) => {
               </div>
             </div>
             <div>
-              <button onClick={() =>{handleSignin()}} class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <button onClick={() => { handleSignin() }} class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />

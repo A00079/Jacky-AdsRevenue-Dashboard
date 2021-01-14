@@ -86,7 +86,7 @@ class Sidebar extends React.Component {
   createLinks = routes => {
     return routes.map((prop, key) => {
       return (
-        <NavItem key={key} className='text-white rounded'>
+        <NavItem key={key} className='text-white rounded' style={{ display: prop.name === 'Login'? 'none' : ''}}>
           <NavLink
             to={prop.layout + prop.path}
             tag={NavLinkRRD}
