@@ -144,7 +144,7 @@ class Sidebar extends React.Component {
           <Nav className="align-items-center d-md-none">
             <UncontrolledDropdown nav>
               <DropdownToggle nav className="nav-link-icon">
-                <i className="ni ni-bell-55" />
+                {/* <i className="ni ni-bell-55" /> */}
               </DropdownToggle>
               <DropdownMenu
                 aria-labelledby="navbar-default_dropdown_1"
@@ -159,14 +159,14 @@ class Sidebar extends React.Component {
             </UncontrolledDropdown>
             <UncontrolledDropdown nav>
               <DropdownToggle nav>
-                <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
+                {/* <Media className="align-items-center">
+                  <span className="avatar avatar-sm rounded-circle hhhhhh">
                     <img
                       alt="..."
                       src={require("assets/img/theme/team-1-800x800.jpg")}
                     />
                   </span>
-                </Media>
+                </Media> */}
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
                 <DropdownItem className="noti-title" header tag="div">
@@ -231,7 +231,7 @@ class Sidebar extends React.Component {
               <InputGroup className="input-group-rounded input-group-merge">
                 <Input
                   aria-label="Search"
-                  className="form-control-rounded form-control-prepended"
+                  className="form-control-rounded form-control-prepended aaaaaaaaaaa"
                   placeholder="Search"
                   type="search"
                 />
